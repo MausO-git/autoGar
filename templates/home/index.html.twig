@@ -20,5 +20,26 @@
 </div>
 <div class="container">
     <h2>Nos derniers modèles</h2>
+    <div class="row">
+        {% for auto in autos %}
+            {# {% set url = path('ads_show', {'slug':ad.slug}) %} #}
+            <div class="col-md-4">
+                <div class="card bg-light mb-3">
+                    <div class="card-header text-center">
+                        {{ auto.km }} km, <strong>{{ auto.price }}</strong>€ / nuit
+                    </div>
+                    <a href="#">
+                        <img src="{{ auto.cover }}" alt="image de l'annonce {{ auto.modele }}" class="starsimg">
+                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title">{{ auto.marque }}</h4>
+                        <h4 class="card-title">{{ auto.modele }}</h4>
+                        <p class="card-text">{{ auto.descri | raw }}</p>
+                        <a href="#" class="btn btn-secondary">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

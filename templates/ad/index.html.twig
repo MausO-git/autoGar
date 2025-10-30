@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos voitures{% endblock %}
+
+{% block body %}
+<h1 class='mx-5 mt-2'>Nos voitures</h1>
+<div class="container">
+    <div class="row">
+        {% for item in all %}
+            {% set url = path('chosen_auto', {'slug':item.slug}) %}
+            <div class="col-md-4">
+                <div class="card bg-primary mb-3">
+                    <div class="card-header text-center">
+                        <h5>{{ item.marque }} - {{ item.modele }}</h5>
+                    </div>
+                    <a href="{{ url }}">
+                        <img src="{{ item.cover }}" alt="image de l'auto {{ item.modele }}" class="starsimg">
+                    </a>
+                    <div class="card-body text-center text-light">
+                        <div class="card-text  text-start overy h100">{{ item.descri | raw }}</div>
+                        <h5 class='card-title'><strong>Kilomètres : </strong> {{ item.km }} km</h5>
+                        <h5 class='card-title'><strong>Prix : </strong> {{ item.price }} €</h5>
+                        <h5 class='card-title'></h5>
+                        <a href="{{ url }}" class="btn btn-dark" style="width:90%;">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,6 @@
 //import './bootstrap.js';
+import 'bootstrap/dist/js/bootstrap.bundle';
+
 /*
  * Welcome to your app's main JavaScript file!
  *

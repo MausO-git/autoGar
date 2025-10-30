@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ad;
+use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -47,6 +48,17 @@ class AppFixtures extends Fixture
             $ad->initializeSlug();
 
             $manager->persist($ad);
+
+            for($j = 1; $j <= rand(3,6); $j++)
+            {
+                $image = new Image();
+                $image->setAd($ad)
+                    ->setUrl("https://picsum.photos/id/".$j."/900")
+                    ->setCaption($faker->words(3, true));
+                
+                $manager->persist($image);
+            }
+
         }
 
         $manager->flush();

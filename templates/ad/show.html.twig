@@ -1,0 +1,80 @@
+{% extends "base.html.twig" %}
+{% block title %}{{ auto.marque }} - {{ auto.modele }}{% endblock %}
+{% block body %}
+    <div class="annonce-title" style="background-image: url({{ auto.cover }})">
+        <div class="container">
+            <h1>{{ auto.marque }} - {{ auto.modele }}</h1>
+
+            <p class="h2"><strong>{{ auto.price }}</strong> €</p>
+            <a href="#" class="btn btn-primary">Faire une offre</a>
+        </div>
+    </div>
+
+    <div class="container full">
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <div class="descr">
+                    <h5>Description du véhicule : </h5>
+                    {{ auto.descri | raw }}
+                </div>
+                <div class="opt">
+                    <h5>Option : </h5>
+                    <strong>{{ auto.opt | raw }}</strong>
+                </div>
+                <div class="bd-example">
+                    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="true">
+                        <div class="carousel-indicators">
+                            {% for image in auto.images %}
+                                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{loop.index0}}" {% if loop.first %} class="active" aria-current="true" {% endif %} aria-label="Slide {{loop.index}}"></button>
+                            {% endfor %}
+
+                        </div>
+                        <div class="carousel-inner">
+                            {% for image in auto.images %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <img src="{{image.url}}" class="d-block w-100" alt="image de {{auto.modele}}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5>{{auto.modele}}</h5>
+                                        <p>{{image.caption}}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="infos mt-3">
+                    <h5>Informations supplémentaires :</h5>
+                    <div class="cyl">
+                        Cylindrée : {{ auto.cylindree }} cm³
+                    </div>
+                    <div class="pow">
+                        Puissance : {{ auto.power }} kW
+                    </div>
+                    <div class="carbu">
+                        Carburant : {{auto.carbu}}
+                    </div>
+                    <div class="year">
+                        Année de mise en circulation : {{auto.year | date('Y')}}
+                    </div>
+                    <div class="trans">
+                        Transmission : {{auto.transmission}}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    {{auto.nbOwner}} propriétaire(s)
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

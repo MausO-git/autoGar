@@ -20,7 +20,7 @@ final class AdController extends AbstractController
     #[Route('/all', name: 'all_auto')]
     public function index(AdRepository $repo): Response
     {
-        $all = $repo->findAll();
+        $all = $repo->findBy([], ['year' => 'ASC']);
 
         return $this->render('ad/index.html.twig', [
             'controller_name' => 'AdController',

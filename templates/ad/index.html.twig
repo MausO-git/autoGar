@@ -8,16 +8,20 @@
     <div class="row">
         {% for item in all %}
             {% set url = path('chosen_auto', {'slug':item.slug}) %}
+            {% set properDes = item.descri
+                | replace({'<br>': '\n', '<br />': '\n', '</p>': '\n'})
+                | striptags
+            %}
             <div class="col-md-4">
                 <div class="card bg-primary mb-3">
                     <div class="card-header text-center">
-                        <h5>{{ item.marque }} - {{ item.modele }}</h5>
+                        <h5>{{ item.marque.name }} - {{ item.modele }}</h5>
                     </div>
                     <a href="{{ url }}">
                         <img src="{{ item.cover }}" alt="image de l'auto {{ item.modele }}" class="starsimg">
                     </a>
                     <div class="card-body text-center text-light">
-                        <div class="card-text  text-start overy h100">{{ item.descri | raw }}</div>
+                        <div class="card-text  text-start h200 mb-2">{{ properDes | split(' ') | slice(0, 50) | join(' ') | nl2br }}...</div>
                         <h5 class='card-title'><strong>Kilomètres : </strong> {{ item.km }} km</h5>
                         <h5 class='card-title'><strong>Prix : </strong> {{ item.price }} €</h5>
                         <h5 class='card-title'></h5>

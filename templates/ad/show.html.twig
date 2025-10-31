@@ -1,9 +1,9 @@
 {% extends "base.html.twig" %}
-{% block title %}{{ auto.marque }} - {{ auto.modele }}{% endblock %}
+{% block title %}{{ auto.marque.name }} - {{ auto.modele }}{% endblock %}
 {% block body %}
     <div class="annonce-title" style="background-image: url({{ auto.cover }})">
         <div class="container">
-            <h1>{{ auto.marque }} - {{ auto.modele }}</h1>
+            <h1>{{ auto.marque.name }} - {{ auto.modele }}</h1>
 
             <p class="h2"><strong>{{ auto.price }}</strong> €</p>
             <a href="#" class="btn btn-primary">Faire une offre</a>

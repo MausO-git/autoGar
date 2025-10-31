@@ -13,8 +13,25 @@
     overflow: auto;
 }
 
-.h100{
-    height: 100px;
+.h200{
+    height: 280px;
+}
+
+.h300{
+    height: 300px;
+    margin-bottom: 10px;
+}
+
+.pres{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url("https://cdn.pixabay.com/photo/2014/06/04/16/36/man-362150_1280.jpg");
+    background-size: cover;
+    background-position: center -80px;
+    text-shadow: 2px 2px 2px black;
+    padding: 100px 0;
 }
 
 .annonce-title{

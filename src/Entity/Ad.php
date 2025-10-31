@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AdRepository;
+use App\Entity\Marque;
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: AdRepository::class)]
 class Ad
@@ -17,8 +18,8 @@ class Ad
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $marque = null;
+    // #[ORM\Column(length: 255)]
+    // private ?string $marque = null;
 
     #[ORM\Column(length: 255)]
     private ?string $modele = null;
@@ -65,6 +66,10 @@ class Ad
     #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'ad')]
     private Collection $images;
 
+    #[ORM\ManyToOne(inversedBy: 'autos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Marque $marque = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -75,11 +80,12 @@ class Ad
     public function initializeSlug(): void
     {
         if (empty($this->slug)) {
-            if (empty($this->marque) || empty($this->modele)) {
+            if (empty($this->modele) || !($this->marque instanceof Marque)) {
                 throw new \RuntimeException('Les champs "marque" et "modele" ne peuvent pas être vides.');
             }
+            $brandName = $this->marque->getName();
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->marque . '-' . $this->modele);
+            $this->slug = $slugify->slugify($brandName . '-' . $this->modele);
         }
     }
 
@@ -88,17 +94,17 @@ class Ad
         return $this->id;
     }
 
-    public function getMarque(): ?string
-    {
-        return $this->marque;
-    }
+    // public function getMarque(): ?string
+    // {
+    //     return $this->marque;
+    // }
 
-    public function setMarque(string $marque): static
-    {
-        $this->marque = $marque;
+    // public function setMarque(string $marque): static
+    // {
+    //     $this->marque = $marque;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getModele(): ?string
     {
@@ -282,6 +288,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMarque(): ?Marque
+    {
+        return $this->marque;
+    }
+
+    public function setMarque(?Marque $marque): static
+    {
+        $this->marque = $marque;
 
         return $this;
     }

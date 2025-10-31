@@ -14,7 +14,7 @@ final class HomeController extends AbstractController
     {
         $autos = $repo->findBy(
             [],
-            ['id' => 'DESC'],
+            ['year' => 'DESC'],
             3
         );
 

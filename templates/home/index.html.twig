@@ -8,11 +8,11 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
+<div class="pres">
     <h1>Bienvenu chez AutoGar</h1>
     <h3>La référence du garage auto</h3>
 </div>
-<div class="container">
+<div class="container py-3">
     <h4>Qui sommes-nous ?</h4>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum ex explicabo repudiandae voluptatum, voluptatem reprehenderit delectus non atque, asperiores minima qui recusandae illo modi deserunt, ut quod. Explicabo soluta voluptates tenetur, debitis ab amet assumenda quod? Nostrum natus temporibus nisi delectus odio! Recusandae ullam amet at corporis ex, inventore earum?</p>
     <p>Ea doloremque facilis aut mollitia id, atque consectetur consequatur repellat ratione excepturi repellendus reiciendis corrupti obcaecati odit inventore amet dolorum sint ut cupiditate, libero eius eum similique! Veritatis magni excepturi, corporis harum id quis ipsam. Veniam repellat perspiciatis aspernatur explicabo, quibusdam, aut quas quam eos adipisci, perferendis amet fugiat consequatur.</p>
@@ -23,6 +23,10 @@
     <div class="row">
         {% for auto in autos %}
             {% set url = path('chosen_auto', {'slug':auto.slug}) %}
+            {% set properDes = auto.descri
+                | replace({'<br>': '\n', '<br />': '\n', '</p>': '\n'})
+                | striptags
+            %}
             <div class="col-md-4">
                 <div class="card bg-light mb-3">
                     <div class="card-header text-center">
@@ -32,9 +36,9 @@
                         <img src="{{ auto.cover }}" alt="image de l'auto {{ auto.modele }}" class="starsimg">
                     </a>
                     <div class="card-body">
-                        <h4 class="card-title">{{ auto.marque }}</h4>
+                        <h4 class="card-title">{{ auto.marque.name }}</h4>
                         <h4 class="card-title">{{ auto.modele }}</h4>
-                        <p class="card-text">{{ auto.descri | raw }}</p>
+                        <p class="card-text h300">{{ properDes | split(' ') | slice(0, 60) | join(' ') | nl2br }}...</p>
                         <a href="{{url}}" class="btn btn-secondary">En savoir plus</a>
                     </div>
                 </div>

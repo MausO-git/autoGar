@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: AdRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Ad
 {
     #[ORM\Id]
@@ -63,7 +64,7 @@ class Ad
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'ad')]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'ad', cascade: ['persist'])]
     private Collection $images;
 
     #[ORM\ManyToOne(inversedBy: 'autos')]

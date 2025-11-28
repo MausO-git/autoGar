@@ -31,6 +31,8 @@ class AppFixtures extends Fixture
             ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
             ->setPassword($this->passwordHasher->hashPassword($admin, 'passwordAdmin'))
             ->setRoles(['ROLE_ADMIN']);
+        
+        $manager->persist($admin);
 
         $genres = ['male', 'femelle'];
 

@@ -48,6 +48,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $introduction = null;
 
+    /**
+     * Complète automatiquement le slug pour les nouveaux utilisateurs lors d'une inscription
+     *
+     * @return void
+     */
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function initializeSlug()
@@ -62,6 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
     }
 
     public function getEmail(): ?string

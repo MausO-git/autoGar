@@ -9,6 +9,7 @@ use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -53,6 +54,7 @@ class Ad
     private ?string $transmission = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\Length(min:100, minMessage: "La description doit faire plus de 100 caractères")]
     private ?string $descri = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -76,17 +78,20 @@ class Ad
         $this->images = new ArrayCollection();
     }
 
+    /**
+     * Automatise le slug lors de l'ajout d'une nouvelle voiture
+     *
+     * @return void
+     */
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function initializeSlug(): void
     {
         if (empty($this->slug)) {
-            if (empty($this->modele) || !($this->marque instanceof Marque)) {
-                throw new \RuntimeException('Les champs "marque" et "modele" ne peuvent pas être vides.');
+            if ($this->marque instanceof Marque && !empty($this->modele)) {
+                $slugify = new Slugify();
+                $this->slug = $slugify->slugify($this->marque->getName() . '-' . $this->modele);
             }
-            $brandName = $this->marque->getName();
-            $slugify = new Slugify();
-            $this->slug = $slugify->slugify($brandName . '-' . $this->modele);
         }
     }
 

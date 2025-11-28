@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Ad;
 use App\Entity\Marque;
 use App\Form\ImageType;
+use App\Form\ApplicationType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,27 +19,9 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class AddAutoType extends AbstractType
+class AddAutoType extends ApplicationType
 {
-    /**
-     * Facilite la création de formulaire
-     *
-     * @param string $label
-     * @param string $placeholder
-     * @param array $options
-     * @return array
-     */
-    private function getConfig(string $label, string $placeholder, array $options = []): array
-    {
-        return array_merge_recursive(
-            [
-                'label' => $label,
-                'attr' => [
-                    'placeholder' => $placeholder
-                ]
-            ], $options
-        );
-    }
+   
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

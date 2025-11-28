@@ -3,19 +3,58 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ad;
+use Faker\Factory;
+use App\Entity\User;
 use App\Entity\Image;
 use App\Entity\Marque;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private UserPasswordHasherInterface $passwordHasher)
+    {}
+
     public function load(ObjectManager $manager): void
     {
         // $product = new Product();
         // $manager->persist($product);
         $faker = Factory::create("fr_FR");
+
+        $admin = new User();
+        $admin->setFirstName("admin")
+            ->setLastName("admin")
+            ->setPicture("")
+            ->setEmail("admin@myepse.be")
+            ->setIntroduction($faker->sentence())
+            ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+            ->setPassword($this->passwordHasher->hashPassword($admin, 'passwordAdmin'))
+            ->setRoles(['ROLE_ADMIN']);
+
+        $genres = ['male', 'femelle'];
+
+        for($u=1; $u<=5; $u++)
+        {
+            $user = new User();
+            $genre = $faker->randomElement($genres);
+
+            $picture = "https://randomuser.me/api/portraits/";
+            $pictureId = $faker->numberBetween(1,99).'.jpg';
+            $picture .= ($genre == 'male' ? 'men/' : 'women/').$pictureId;
+
+            $hash = $this->passwordHasher->hashPassword($user,'password');
+
+            $user->setFirstName($faker->firstName($genre))
+                ->setLastName($faker->lastName())
+                ->setEmail($faker->email())
+                ->setIntroduction($faker->sentence())
+                ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+                ->setPassword($hash)
+                ->setPicture($picture);
+
+            $manager->persist($user);
+        }
 
         for($cpt = 1; $cpt <= 10; $cpt++)
         {
@@ -51,8 +90,6 @@ class AppFixtures extends Fixture
                     ->setDescri($descr)
                     ->setOpt($opt)
                 ;
-                
-                $ad->initializeSlug();
     
                 $manager->persist($ad);
     

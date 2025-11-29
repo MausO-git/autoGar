@@ -1,21 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout véhicule{% endblock %}
+{% block title %}Modification d'un véhicule{% endblock %}
 
 {% form_theme myForm 'ad/_collection.html.twig' %}
 
 {% block body %}
     <div class="container full">
+        <h2 class="mb-3">Modification du véhicule: {{auto.modele}}</h2>
         {{ form_start(myForm) }}
-        
+
         {{ form_widget(myForm) }}
-        
-        <button type="submit" class="btn btn-primary mt-3">Ajout du véhicule</button>
+
+        <button type="submit" class="btn btn-warning mt-3">Modification</button>
 
         {{ form_end(myForm) }}
     </div>
 {% endblock %}
 
+
 {% block javascripts %}
-    {{encore_entry_script_tags('auto')}}
+    {{ encore_entry_script_tags('auto') }}
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use App\Form\ApplicationType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,7 +23,10 @@ class RegistrationType extends ApplicationType
             ->add('email', EmailType::class, $this->getConfig('Email', "Votre adresse e-mail..."))
             ->add('password', PasswordType::class, $this->getConfig('Mot de passe', "Votre mot de passe..."))
             ->add('passwordConfirm', PasswordType::class, $this->getConfig('Confirmation du mot de passe', "Confirmez votre mot de passe..."))
-            ->add('picture', UrlType::class, $this->getConfig('Photo de profil', "Veuillez entrer l'URL de votre avatar..."))
+            ->add('picture', FileType::class, [
+                "label" => "Photo de profil (jpg,png,gif)",
+                "required" => false
+            ])
             ->add('introduction', TextType::class, $this->getConfig('Introduction', "Veuillez vous présenter brièvement"))
             ->add('description', TextareaType::class, $this->getConfig('Description détaillée', "Veuillez vous décrire en déatils"))
         ;

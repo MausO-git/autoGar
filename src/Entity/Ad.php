@@ -66,7 +66,7 @@ class Ad
     /**
      * @var Collection<int, Image>
      */
-    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'ad', cascade: ['persist'])]
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'ad', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $images;
 
     #[ORM\ManyToOne(inversedBy: 'autos')]

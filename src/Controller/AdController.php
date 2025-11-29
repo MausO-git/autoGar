@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AdController extends AbstractController
 {
@@ -32,7 +33,15 @@ final class AdController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet à l'admin d'ajouter un véhicule à la bdd
+     *
+     * @param Request $req
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/all/add', name: 'add_auto')]
+    #[IsGranted("ROLE_ADMIN")]
     public function create(Request $req, EntityManagerInterface $manager) : Response
     {
         $auto = new Ad();
@@ -62,6 +71,70 @@ final class AdController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet à l'admin d'éditer un véhicule
+     * @param Request $req
+     * @param EntityManagerInterface $manager
+     * @param Ad $auto
+     * @return Response
+     */
+    #[Route('/all/{slug}/edit', name:'auto_edit')]
+    #[IsGranted("ROLE_ADMIN")]
+    public function editAuto(Request $req, EntityManagerInterface $manager, Ad $auto): Response
+    {
+        $form = $this->createForm(AddAutoType::class, $auto);
+        $form->handleRequest($req);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            foreach($auto->getImages() as $img)
+            {
+                $img->setAd($auto);
+                $manager->persist($img);
+            }
+
+            $manager->persist($auto);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "L'auto <strong>".$auto->getModele()."</strong> a bien été modifiée"
+            );
+
+            return $this->redirectToRoute("chosen_auto",[
+                'slug' => $auto->getSlug()
+            ]);
+        }
+
+        return $this->render("ad/edit.html.twig",[
+            'auto' => $auto,
+            'myForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Permet de supprimer un véhicule de la bdd
+     * @param Ad $auto
+     * @param EntityManagerInterface $manager
+     * @return @Response
+     */
+    #[Route('/all/{slug}/delete', name:"auto_delete")]
+    #[IsGranted("ROLE_ADMIN")]
+    public function deleteAuto(Ad $auto, EntityManagerInterface $manager): Response
+    {
+        $this->addFlash(
+            'success',
+            "La voiture <strong>".$auto->getModele()."</strong> a bien été retirée"
+        );
+        $manager->remove($auto);
+        $manager->flush();
+        return $this->redirectToRoute('all_auto');
+    }
+
+    /**
+     * Permet d'afficher le véhicule choisi
+     * @param Ad $auto
+     * @return Response
+     */
     #[Route('/all/{slug}', name: 'chosen_auto')]
     public function show(
         #[MapEntity(mapping: ['slug' => 'slug'])]
@@ -69,7 +142,7 @@ final class AdController extends AbstractController
     ): Response
     {
         return $this->render("ad/show.html.twig",[
-            "auto" => $auto
+            "auto" => $auto,
         ]);
     }
 }

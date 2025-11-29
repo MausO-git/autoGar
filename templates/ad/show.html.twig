@@ -6,7 +6,13 @@
             <h1>{{ auto.marque.name }} - {{ auto.modele }}</h1>
 
             <p class="h2"><strong>{{ auto.price }}</strong> €</p>
-            <a href="#" class="btn btn-primary">Faire une offre</a>
+            <div class="col-sm-9">
+                <a href="#" class="btn btn-primary mx-1">Faire une offre</a>
+                {% if is_granted("ROLE_ADMIN") %}
+                    <a href="{{path('auto_edit', {'slug': auto.slug})}}" class="btn btn-warning mx-1">Modifier le véhicule</a>
+                    <a href="{{path('auto_delete', {'slug': auto.slug})}}" class="btn btn-danger mx-1">Retirer le véhicule</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 

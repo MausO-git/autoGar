@@ -71,3 +71,11 @@
     max-width: 24px;
     max-height: 24px;
 }
+
+.text18{
+    font-size: 18px;
+}
+
+.price{
+    color: goldenrod;
+}

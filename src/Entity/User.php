@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -22,30 +23,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\Email(message: "Veuillez renseigner une adresse e-mail valide")]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"Le mot de passe ne peut pas être vide")]
+    #[Assert\Length(min: 8, minMessage:"Le mot de passe doit contenir au moins {{ limit }} caractères")]
+    #[Assert\Regex(pattern:'/[A-Z]/', message:"Le mot de passe doit contenir au moins une majuscule")]
+    #[Assert\Regex(pattern:'/[a-z]/', message:"Le mot de passe doit contenir au moins une minuscle")]
+    #[Assert\Regex(pattern: '/\d/', message: "Le mot de passe doit contenir au moins un chiffre")]
+    #[Assert\Regex(pattern: '/[^A-Za-z0-9]/', message: "Le mot de passe doit contenir au moins un caractère spécial")]
     private ?string $password = null;
 
+    #[Assert\EqualTo(propertyPath:"password", message:"Vous n'avez pas correctement confirmé votre mot de passe")]
+    public ?string $passwordConfirm = null;
+
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Vous devez renseigner votre prénom")]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Vous devez renseigner votre nom de famiile")]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Url(message: "Vous devez renseigner une adresse URL valide")]
     private ?string $picture = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, minMessage:"Votre description doit faire plus de 10 caractères")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max: 255, minMessage:"Votre introduction doit faire plus de 10 caractères", maxMessage: "Votre introduction ne doit pas dépasser plus de 255 caractères")]
     private ?string $introduction = null;
 
     /**

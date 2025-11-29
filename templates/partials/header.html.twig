@@ -22,7 +22,9 @@
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="accountDropdownLink">{{ app.user.fullName }}</a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdownLink">
-                            <a href="#" class="dropdown-item">Créer une annonce</a>
+                            {% if is_granted("ROLE_ADMIN") %}
+                                <a href="#" class="dropdown-item">Ajouter un véhicule</a>
+                            {% endif %}
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item">Mon compte</a>
                             <a href="#" class="dropdown-item">Modifier mon profil</a>

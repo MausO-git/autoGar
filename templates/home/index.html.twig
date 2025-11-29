@@ -29,16 +29,16 @@
             %}
             <div class="col-md-4">
                 <div class="card bg-light mb-3">
-                    <div class="card-header text-center">
-                        {{ auto.km }} km, <strong>{{ auto.price }}</strong>€
+                    <div class="card-header text-center text18">
+                        <strong>{{ auto.marque.name }} - {{ auto.modele }}</strong>
                     </div>
                     <a href="{{ url }}">
                         <img src="{{ auto.cover }}" alt="image de l'auto {{ auto.modele }}" class="starsimg">
                     </a>
                     <div class="card-body">
-                        <h4 class="card-title">{{ auto.marque.name }}</h4>
-                        <h4 class="card-title">{{ auto.modele }}</h4>
-                        <p class="card-text h300">{{ properDes | split(' ') | slice(0, 60) | join(' ') | nl2br }}...</p>
+                        <h4 class="card-title price">{{ auto.price }} €</h4>
+                        <h5 class="card-title">{{ auto.km }} km</h5>
+                        <p class="card-text h300">{{ properDes | split(' ') | slice(0, 50) | join(' ') | nl2br }}...</p>
                         <a href="{{url}}" class="btn btn-secondary">En savoir plus</a>
                     </div>
                 </div>

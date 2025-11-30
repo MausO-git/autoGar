@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -18,6 +19,7 @@ class Image
     private ?Ad $ad = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message:"L'adresse de l'image doit être valide")]
     private ?string $url = null;
 
     #[ORM\Column(length: 255)]

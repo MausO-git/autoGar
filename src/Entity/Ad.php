@@ -27,6 +27,7 @@ class Ad
     private ?string $modele = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message:"L'adresse de l'image doit être valide")]
     private ?string $cover = null;
 
     #[ORM\Column]
@@ -36,6 +37,9 @@ class Ad
     private ?string $price = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero(
+        message: 'La valeur doit être un entier positif ou égale à 0.'
+    )]
     private ?int $nbOwner = null;
 
     #[ORM\Column]
